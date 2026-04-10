@@ -204,15 +204,54 @@ function gerarHtmlPastor(nome, email, telefone, resultados) {
   `.trim();
 }
 
+// ── Rate Limiter simples em memória ──────────────────────────────────────────
+const rateMap = new Map();
+const RATE_LIMIT = 3;       // máximo de envios por IP
+const RATE_WINDOW = 15 * 60 * 1000; // janela de 15 minutos
+
+function checkRateLimit(ip) {
+  const now = Date.now();
+  const entry = rateMap.get(ip) || { count: 0, start: now };
+
+  if (now - entry.start > RATE_WINDOW) {
+    // janela expirou, reinicia
+    rateMap.set(ip, { count: 1, start: now });
+    return true;
+  }
+
+  if (entry.count >= RATE_LIMIT) return false;
+
+  rateMap.set(ip, { count: entry.count + 1, start: entry.start });
+  return true;
+}
+
+// ── Validação de entrada ──────────────────────────────────────────────────────
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function validarDados(nome, email, telefone, resultados) {
+  if (!nome || typeof nome !== 'string' || nome.trim().length > 200) return false;
+  if (!email || !EMAIL_REGEX.test(email) || email.length > 254) return false;
+  if (!telefone || typeof telefone !== 'string' || telefone.trim().length > 30) return false;
+  if (!Array.isArray(resultados) || resultados.length === 0 || resultados.length > 100) return false;
+  return true;
+}
+
+// ── Handler ───────────────────────────────────────────────────────────────────
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ erro: 'Método não permitido' });
   }
 
+  // Rate limiting por IP
+  const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || 'unknown';
+  if (!checkRateLimit(ip)) {
+    return res.status(429).json({ erro: 'Muitas requisições. Aguarde alguns minutos.' });
+  }
+
   const { nome, email, telefone, resultados } = req.body;
 
-  if (!nome || !email || !telefone || !resultados) {
-    return res.status(400).json({ erro: 'Dados incompletos' });
+  if (!validarDados(nome, email, telefone, resultados)) {
+    return res.status(400).json({ erro: 'Dados inválidos ou incompletos' });
   }
 
   const isDev = process.env.NODE_ENV !== 'production';
@@ -231,14 +270,14 @@ export default async function handler(req, res) {
     from: `"Teste de Dons · IACMVV" <${EMAIL_USER}>`,
     to: email,
     subject: 'Resultado do Teste de Dons - IACMVV',
-    html: gerarHtmlParticipante(nome, resultados),
+    html: gerarHtmlParticipante(nome.trim(), resultados),
   };
 
   const mailOptionsPastor = {
     from: `"Teste de Dons · IACMVV" <${EMAIL_USER}>`,
     to: PASTOR_EMAIL,
-    subject: `🎁 Novo teste realizado — ${nome}`,
-    html: gerarHtmlPastor(nome, email, telefone, resultados),
+    subject: `🎁 Novo teste realizado — ${nome.trim()}`,
+    html: gerarHtmlPastor(nome.trim(), email, telefone.trim(), resultados),
   };
 
   try {
