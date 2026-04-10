@@ -4,6 +4,206 @@ const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
 const PASTOR_EMAIL = process.env.PASTOR_EMAIL;
 
+function getBadgeStyle(interpretacao) {
+  const map = {
+    'SIM':          'background:#C94A4A;color:#fff;',
+    'POSSIVELMENTE':'background:#D4EDDA;color:#155724;',
+    'DIFICILMENTE': 'background:#FFF3CD;color:#856404;',
+    'NÃO':          'background:#FFE8E8;color:#9E1F1F;',
+  };
+  return map[interpretacao] || 'background:#eee;color:#333;';
+}
+
+function gerarHtmlParticipante(nome, resultados) {
+  const linhas = resultados.map(r => `
+    <tr>
+      <td style="padding:10px 16px;border-bottom:1px solid #F5CFCF;color:#6B1A1A;font-weight:500;">
+        ${r.nome}
+      </td>
+      <td style="padding:10px 16px;border-bottom:1px solid #F5CFCF;text-align:center;font-weight:700;color:#6B1A1A;">
+        ${r.pontuação}/24
+      </td>
+      <td style="padding:10px 16px;border-bottom:1px solid #F5CFCF;text-align:center;">
+        <span style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;text-transform:uppercase;${getBadgeStyle(r.interpretação)}">
+          ${r.interpretação}
+        </span>
+      </td>
+    </tr>
+  `).join('');
+
+  return `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#FFF5F5;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FFF5F5;padding:32px 16px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(158,31,31,0.10);">
+
+        <!-- HEADER -->
+        <tr>
+          <td style="background:linear-gradient(135deg,#C94A4A 0%,#9E1F1F 100%);padding:36px 32px;text-align:center;">
+            <p style="margin:0 0 10px;color:rgba(255,255,255,0.85);font-size:0.95rem;letter-spacing:1px;text-transform:uppercase;">Igreja Aliança</p>
+            <h1 style="margin:0;color:#fff;font-size:1.8rem;font-weight:700;">Teste de Dons</h1>
+            <p style="margin:10px 0 0;color:rgba(255,255,255,0.8);font-size:0.9rem;">Seu resultado está aqui 🎁</p>
+          </td>
+        </tr>
+
+        <!-- SAUDAÇÃO -->
+        <tr>
+          <td style="padding:32px 32px 16px;">
+            <p style="margin:0 0 8px;font-size:1.1rem;color:#6B1A1A;font-weight:600;">Olá, ${nome}! 👋</p>
+            <p style="margin:0;font-size:0.95rem;color:#555;line-height:1.7;">
+              Obrigado por completar o <strong>Teste de Dons da IACMVV</strong>. Abaixo você encontra sua pontuação em cada dom espiritual identificado.
+            </p>
+          </td>
+        </tr>
+
+        <!-- TABELA DE RESULTADOS -->
+        <tr>
+          <td style="padding:8px 32px 32px;">
+            <p style="margin:0 0 12px;font-size:0.85rem;color:#9E1F1F;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Seus Dons Identificados</p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:12px;overflow:hidden;border:1px solid #F5CFCF;">
+              <thead>
+                <tr style="background:#FBEAEA;">
+                  <th style="padding:10px 16px;text-align:left;font-size:0.8rem;color:#9E1F1F;text-transform:uppercase;letter-spacing:0.5px;">Dom</th>
+                  <th style="padding:10px 16px;text-align:center;font-size:0.8rem;color:#9E1F1F;text-transform:uppercase;letter-spacing:0.5px;">Pontuação</th>
+                  <th style="padding:10px 16px;text-align:center;font-size:0.8rem;color:#9E1F1F;text-transform:uppercase;letter-spacing:0.5px;">Resultado</th>
+                </tr>
+              </thead>
+              <tbody>${linhas}</tbody>
+            </table>
+          </td>
+        </tr>
+
+        <!-- LEGENDA -->
+        <tr>
+          <td style="padding:0 32px 28px;">
+            <p style="margin:0 0 10px;font-size:0.8rem;color:#9E1F1F;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Legenda</p>
+            <table cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="padding:4px 8px 4px 0;">
+                  <span style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;background:#C94A4A;color:#fff;">SIM</span>
+                </td>
+                <td style="padding:4px 0;font-size:0.82rem;color:#555;">Forte indicação deste dom</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 8px 4px 0;">
+                  <span style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;background:#D4EDDA;color:#155724;">POSSIVELMENTE</span>
+                </td>
+                <td style="padding:4px 0;font-size:0.82rem;color:#555;">Indício moderado deste dom</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 8px 4px 0;">
+                  <span style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;background:#FFF3CD;color:#856404;">DIFICILMENTE</span>
+                </td>
+                <td style="padding:4px 0;font-size:0.82rem;color:#555;">Pouca indicação deste dom</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 8px 4px 0;">
+                  <span style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;background:#FFE8E8;color:#9E1F1F;">NÃO</span>
+                </td>
+                <td style="padding:4px 0;font-size:0.82rem;color:#555;">Sem indicação deste dom</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- FOOTER -->
+        <tr>
+          <td style="background:#FBEAEA;padding:20px 32px;text-align:center;border-top:1px solid #F5CFCF;">
+            <p style="margin:0 0 4px;font-size:0.85rem;color:#9E1F1F;font-weight:700;">Igreja Aliança CMVV</p>
+            <p style="margin:0;font-size:0.8rem;color:#aaa;">Este e-mail foi gerado automaticamente. Por favor, não responda.</p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
+  `.trim();
+}
+
+function gerarHtmlPastor(nome, email, telefone, resultados) {
+  const linhas = resultados.map(r => `
+    <tr>
+      <td style="padding:8px 14px;border-bottom:1px solid #F5CFCF;color:#6B1A1A;">${r.nome}</td>
+      <td style="padding:8px 14px;border-bottom:1px solid #F5CFCF;text-align:center;font-weight:700;color:#6B1A1A;">${r.pontuação}/24</td>
+      <td style="padding:8px 14px;border-bottom:1px solid #F5CFCF;text-align:center;">
+        <span style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;text-transform:uppercase;${getBadgeStyle(r.interpretação)}">${r.interpretação}</span>
+      </td>
+    </tr>
+  `).join('');
+
+  return `
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#FFF5F5;font-family:Arial,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#FFF5F5;padding:32px 16px;">
+    <tr><td align="center">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(158,31,31,0.10);">
+
+        <tr>
+          <td style="background:linear-gradient(135deg,#C94A4A 0%,#9E1F1F 100%);padding:28px 32px;">
+            <p style="margin:0 0 4px;color:rgba(255,255,255,0.75);font-size:0.8rem;text-transform:uppercase;letter-spacing:1px;">IACMVV · Novo Resultado</p>
+            <h2 style="margin:0;color:#fff;font-size:1.4rem;">Teste de Dons realizado</h2>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:28px 32px 16px;">
+            <p style="margin:0 0 16px;font-size:0.95rem;color:#555;line-height:1.7;">
+              Um novo teste foi concluído. Confira os dados do participante e os resultados abaixo.
+            </p>
+            <table cellpadding="0" cellspacing="0" style="background:#FBEAEA;border-radius:10px;padding:16px 20px;width:100%;border:1px solid #F5CFCF;">
+              <tr>
+                <td style="padding:4px 0;font-size:0.85rem;color:#9E1F1F;font-weight:700;width:100px;">Nome</td>
+                <td style="padding:4px 0;font-size:0.95rem;color:#6B1A1A;font-weight:600;">${nome}</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 0;font-size:0.85rem;color:#9E1F1F;font-weight:700;">E-mail</td>
+                <td style="padding:4px 0;font-size:0.95rem;color:#6B1A1A;">${email}</td>
+              </tr>
+              <tr>
+                <td style="padding:4px 0;font-size:0.85rem;color:#9E1F1F;font-weight:700;">Telefone</td>
+                <td style="padding:4px 0;font-size:0.95rem;color:#6B1A1A;">${telefone}</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="padding:8px 32px 32px;">
+            <p style="margin:0 0 12px;font-size:0.85rem;color:#9E1F1F;font-weight:700;text-transform:uppercase;letter-spacing:1px;">Resultados</p>
+            <table width="100%" cellpadding="0" cellspacing="0" style="border-radius:12px;overflow:hidden;border:1px solid #F5CFCF;">
+              <thead>
+                <tr style="background:#FBEAEA;">
+                  <th style="padding:8px 14px;text-align:left;font-size:0.78rem;color:#9E1F1F;text-transform:uppercase;">Dom</th>
+                  <th style="padding:8px 14px;text-align:center;font-size:0.78rem;color:#9E1F1F;text-transform:uppercase;">Pontuação</th>
+                  <th style="padding:8px 14px;text-align:center;font-size:0.78rem;color:#9E1F1F;text-transform:uppercase;">Resultado</th>
+                </tr>
+              </thead>
+              <tbody>${linhas}</tbody>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td style="background:#FBEAEA;padding:16px 32px;text-align:center;border-top:1px solid #F5CFCF;">
+            <p style="margin:0;font-size:0.8rem;color:#aaa;">Gerado automaticamente pelo sistema de Teste de Dons · IACMVV</p>
+          </td>
+        </tr>
+
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>
+  `.trim();
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ erro: 'Método não permitido' });
@@ -15,44 +215,30 @@ export default async function handler(req, res) {
     return res.status(400).json({ erro: 'Dados incompletos' });
   }
 
+  const isDev = process.env.NODE_ENV !== 'production';
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
     auth: {
       user: EMAIL_USER,
       pass: EMAIL_PASS,
     },
+    tls: isDev ? { rejectUnauthorized: false } : undefined,
   });
 
-  const resultadosTexto = resultados
-    .map(r => `${r.nome}: ${r.pontuação}/24 - ${r.interpretação}`)
-    .join('\n');
-
   const mailOptionsParticipante = {
-    from: EMAIL_USER,
+    from: `"Teste de Dons · IACMVV" <${EMAIL_USER}>`,
     to: email,
     subject: 'Resultado do Teste de Dons - IACMVV',
-    text: `
-Olá ${nome},
-
-Você completou o Teste de Dons da IACMVV. Aqui estão seus resultados:
-
-${resultadosTexto}
-
-Atenciosamente,
-IACMVV
-    `.trim(),
+    html: gerarHtmlParticipante(nome, resultados),
   };
 
   const mailOptionsPastor = {
-    from: EMAIL_USER,
+    from: `"Teste de Dons · IACMVV" <${EMAIL_USER}>`,
     to: PASTOR_EMAIL,
-    subject: `Novo teste realizado - ${nome}`,
-    text: `
-Um novo teste foi realizado por ${nome} (${email}, ${telefone}).
-
-Resultados:
-${resultadosTexto}
-    `.trim(),
+    subject: `🎁 Novo teste realizado — ${nome}`,
+    html: gerarHtmlPastor(nome, email, telefone, resultados),
   };
 
   try {

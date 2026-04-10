@@ -18,6 +18,7 @@ export function TestePage() {
     telefone: ''
   });
   const [respostas, setRespostas] = useState<Record<number, number>>({});
+  const [isEnviando, setIsEnviando] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDados({ ...dados, [e.target.name]: e.target.value });
@@ -50,8 +51,11 @@ export function TestePage() {
   };
 
   const exibirResultados = async () => {
+    if (isEnviando) return;
     if (!validarFormulario()) return;
     if (!validarRespostas()) { alert('Responda todas as 56 perguntas.'); return; }
+
+    setIsEnviando(true);
 
     const resultados = calcularResultados(respostas);
 
@@ -60,7 +64,12 @@ export function TestePage() {
       resultados
     }));
 
-    await enviarResultado({ ...dados, resultados });
+    // Tenta enviar o e-mail, mas não bloqueia a navegação em caso de falha
+    try {
+      await enviarResultado({ ...dados, resultados });
+    } catch (erro) {
+      console.warn('Aviso: não foi possível enviar o e-mail.', erro);
+    }
 
     window.location.href = '/resultado';
   };
@@ -150,8 +159,14 @@ export function TestePage() {
           <button type="button" className="btn btn-secondary" onClick={preencherTesteRapido}>
             Preencher Teste Rápido
           </button>
-          <button type="button" className="btn btn-primary" onClick={exibirResultados}>
-            Ver Resultado
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={exibirResultados}
+            disabled={isEnviando}
+            style={isEnviando ? { opacity: 0.7, cursor: 'not-allowed' } : {}}
+          >
+            {isEnviando ? 'Enviando...' : 'Ver Resultado'}
           </button>
         </div>
       </section>

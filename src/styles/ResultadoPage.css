@@ -25,6 +25,7 @@
   font-size: 1.1rem;
   color: #6B1A1A;
   font-weight: 500;
+  word-break: break-word;
 }
 
 .resultado-nota {
@@ -36,13 +37,28 @@
 }
 
 .resultados-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 20px;
 }
 
-@media (max-width: 600px) {
-  .resultados-grid {
-    grid-template-columns: 1fr;
+.resultados-grid .don-card {
+  flex: 0 0 220px;
+  flex-grow: 1;
+  max-width: 260px;
+}
+
+@media (max-width: 768px) {
+  .resultados-grid .don-card {
+    flex: 0 0 calc(50% - 10px);
+    max-width: calc(50% - 10px);
+  }
+}
+
+@media (max-width: 480px) {
+  .resultados-grid .don-card {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 }

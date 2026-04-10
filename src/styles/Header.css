@@ -16,9 +16,12 @@
 .header-logo {
   height: 50px;
   width: auto;
+  flex-shrink: 0;
 }
 
 .header-title {
+  flex: 1;
+  text-align: center;
   color: white;
   font-size: 1.8rem;
   font-weight: 700;
