@@ -1,0 +1,66 @@
+.don-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(158, 31, 31, 0.1);
+  border: 1px solid #F5CFCF;
+  text-align: center;
+}
+
+.don-nome {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #C94A4A;
+  margin-bottom: 8px;
+}
+
+.don-pontuacao {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6B1A1A;
+  margin-bottom: 10px;
+}
+
+.don-interpretação {
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.don-interpretação.nao {
+  background: #FFE8E8;
+  color: #9E1F1F;
+}
+
+.don-interpretação.dificilmente {
+  background: #FFF3CD;
+  color: #856404;
+}
+
+.don-interpretação.possivelmente {
+  background: #D4EDDA;
+  color: #155724;
+}
+
+.don-interpretação.sim {
+  background: #C94A4A;
+  color: #FFFFFF;
+}
+
+.barra-progresso {
+  height: 8px;
+  background: #F5CFCF;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barra-preenchida {
+  height: 100%;
+  background: linear-gradient(90deg, #C94A4A 0%, #9E1F1F 100%);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}

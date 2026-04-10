@@ -1,0 +1,48 @@
+.dados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.dado-item {
+  background: linear-gradient(135deg, #FBEAEA 0%, #FFF5F5 100%);
+  padding: 18px;
+  border-radius: 10px;
+  border: 1px solid #F5CFCF;
+}
+
+.dado-label {
+  display: block;
+  font-size: 0.85rem;
+  color: #9E1F1F;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.dado-value {
+  display: block;
+  font-size: 1.1rem;
+  color: #6B1A1A;
+  font-weight: 500;
+}
+
+.resultado-nota {
+  color: #6B1A1A;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 25px;
+  text-align: left;
+}
+
+.resultados-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 20px;
+}
+
+@media (max-width: 600px) {
+  .resultados-grid {
+    grid-template-columns: 1fr;
+  }
+}
