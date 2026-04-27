@@ -81,26 +81,26 @@ export const PERGUNTAS: Pergunta[] = [
 ];
 
 export const DONS: Don[] = [
-  { nome: 'Apóstolo', perguntas: [4, 11, 19, 25, 29, 39, 43, 49] },
-  { nome: 'Profeta', perguntas: [17, 37, 48, 53, 6, 13, 30, 44] },
-  { nome: 'Evangelista', perguntas: [5, 12, 16, 26, 33, 36, 51, 20] },
-  { nome: 'Pastor/Aconselhador', perguntas: [2, 9, 27, 40, 46, 50, 52, 54] },
-  { nome: 'Mestre', perguntas: [3, 10, 18, 31, 35, 38, 45, 42] },
-  { nome: 'Exortação/Aconselhamento', perguntas: [9, 13, 27, 40, 46, 52, 30, 34] },
-  { nome: 'Intercessão', perguntas: [23, 34, 44, 17, 26, 30, 51, 56] },
-  { nome: 'Sabedoria', perguntas: [9, 46, 52, 54, 38, 50, 30, 40] },
-  { nome: 'Criatividade', perguntas: [7, 14, 22, 24, 36, 45, 47, 55] },
-  { nome: 'Hospitalidade', perguntas: [6, 21, 41, 17, 30, 40, 51, 56] },
-  { nome: 'Liderança', perguntas: [8, 15, 22, 29, 36, 43, 47, 55] },
-  { nome: 'Ensino', perguntas: [3, 10, 18, 31, 35, 42, 45, 46] },
-  { nome: 'Preocupação com os outros', perguntas: [13, 27, 34, 40, 44, 52, 17, 30] },
-  { nome: ' Fé', perguntas: [16, 19, 25, 33, 39, 51, 36, 26] },
+  { nome: 'Apóstolo',                       perguntas: [1, 15, 29, 43] },
+  { nome: 'Profeta',                         perguntas: [2, 16, 30, 44] },
+  { nome: 'Evangelista',                     perguntas: [3, 17, 31, 45] },
+  { nome: 'Pastor',                          perguntas: [4, 18, 32, 46] },
+  { nome: 'Ensino / Mestre',                perguntas: [5, 19, 33, 47] },
+  { nome: 'Conhecimento',                   perguntas: [6, 20, 34, 48] },
+  { nome: 'Sabedoria',                      perguntas: [7, 21, 35, 49] },
+  { nome: 'Exortação/Aconselhamento',       perguntas: [8, 22, 36, 50] },
+  { nome: 'Liderança',                      perguntas: [9, 23, 37, 51] },
+  { nome: 'Serviço / Diaconia',             perguntas: [10, 24, 38, 52] },
+  { nome: 'Contribuição',                   perguntas: [11, 25, 39, 53] },
+  { nome: 'Misericórdia',                   perguntas: [12, 26, 40, 54] },
+  { nome: 'Discernimento',                  perguntas: [13, 27, 41, 55] },
+  { nome: 'Fé',                             perguntas: [14, 28, 42, 56] },
 ];
 
 export function getInterpretação(pontuação: number): string {
-  if (pontuação <= 6) return 'NÃO';
-  if (pontuação <= 12) return 'DIFICILMENTE';
-  if (pontuação <= 18) return 'POSSIVELMENTE';
+  if (pontuação <= 3) return 'NÃO';
+  if (pontuação <= 6) return 'DIFICILMENTE';
+  if (pontuação <= 9) return 'POSSIVELMENTE';
   return 'SIM';
 }
 

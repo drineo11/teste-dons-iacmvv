@@ -21,7 +21,7 @@ function gerarHtmlParticipante(nome, resultados) {
         ${r.nome}
       </td>
       <td style="padding:10px 16px;border-bottom:1px solid #F5CFCF;text-align:center;font-weight:700;color:#6B1A1A;">
-        ${r.pontuação}/24
+        ${r.pontuação}/12
       </td>
       <td style="padding:10px 16px;border-bottom:1px solid #F5CFCF;text-align:center;">
         <span style="display:inline-block;padding:4px 14px;border-radius:20px;font-size:0.8rem;font-weight:700;text-transform:uppercase;${getBadgeStyle(r.interpretação)}">
@@ -129,7 +129,7 @@ function gerarHtmlPastor(nome, email, telefone, resultados) {
   const linhas = resultados.map(r => `
     <tr>
       <td style="padding:8px 14px;border-bottom:1px solid #F5CFCF;color:#6B1A1A;">${r.nome}</td>
-      <td style="padding:8px 14px;border-bottom:1px solid #F5CFCF;text-align:center;font-weight:700;color:#6B1A1A;">${r.pontuação}/24</td>
+      <td style="padding:8px 14px;border-bottom:1px solid #F5CFCF;text-align:center;font-weight:700;color:#6B1A1A;">${r.pontuação}/12</td>
       <td style="padding:8px 14px;border-bottom:1px solid #F5CFCF;text-align:center;">
         <span style="display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;text-transform:uppercase;${getBadgeStyle(r.interpretação)}">${r.interpretação}</span>
       </td>

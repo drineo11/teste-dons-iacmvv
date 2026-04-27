@@ -75,3 +75,33 @@
   border-radius: 4px;
   transition: width 0.5s ease;
 }
+
+/* === Card clicável === */
+.don-card.clicavel {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.don-card.clicavel:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(158, 31, 31, 0.18);
+}
+
+.don-card.clicavel:focus-visible {
+  outline: 3px solid #C94A4A;
+  outline-offset: 3px;
+}
+
+.don-card-hint {
+  font-size: 0.75rem;
+  color: #C94A4A;
+  font-weight: 600;
+  margin-top: 12px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.don-card.clicavel:hover .don-card-hint {
+  opacity: 1;
+}
+
