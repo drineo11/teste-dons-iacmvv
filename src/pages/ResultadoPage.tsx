@@ -20,27 +20,6 @@ export function ResultadoPage() {
     const salvo = sessionStorage.getItem('resultados');
     if (salvo) {
       setDados(JSON.parse(salvo));
-    } else if (import.meta.env.DEV) {
-      // Injeta dados de mentira apenas quando estiver rodando localmente (npm run dev)
-      setDados({
-        dados: { nome: 'Desenvolvedor', email: 'dev@exemplo.com', telefone: '(11) 99999-9999' },
-        resultados: [
-          { nome: 'Apóstolo',               pontuação: 11, interpretação: 'SIM' },
-          { nome: 'Profeta',                pontuação: 8,  interpretação: 'POSSIVELMENTE' },
-          { nome: 'Evangelista',            pontuação: 5,  interpretação: 'DIFICILMENTE' },
-          { nome: 'Pastor',                 pontuação: 9,  interpretação: 'POSSIVELMENTE' },
-          { nome: 'Ensino / Mestre',        pontuação: 12, interpretação: 'SIM' },
-          { nome: 'Conhecimento',           pontuação: 2,  interpretação: 'NÃO' },
-          { nome: 'Sabedoria',              pontuação: 7,  interpretação: 'POSSIVELMENTE' },
-          { nome: 'Exortação/Aconselhamento', pontuação: 6, interpretação: 'DIFICILMENTE' },
-          { nome: 'Liderança',              pontuação: 10, interpretação: 'SIM' },
-          { nome: 'Serviço / Diaconia',     pontuação: 4,  interpretação: 'DIFICILMENTE' },
-          { nome: 'Contribuição',           pontuação: 5,  interpretação: 'DIFICILMENTE' },
-          { nome: 'Misericórdia',           pontuação: 8,  interpretação: 'POSSIVELMENTE' },
-          { nome: 'Discernimento',          pontuação: 3,  interpretação: 'NÃO' },
-          { nome: 'Fé',                     pontuação: 11, interpretação: 'SIM' },
-        ],
-      });
     } else {
       window.location.href = '/';
     }
@@ -78,6 +57,9 @@ export function ResultadoPage() {
 
         <section className="section">
           <h2>Seus Dons Identificados</h2>
+          <p className="resultado-referencias">
+            Definições dos Dons Espirituais: Romanos 12:7-8 | ICoríntios 12:7-10 | Efésios 4:11
+          </p>
           <p className="resultado-nota">
             O resultado abaixo indica sua pontuação em cada don espiritual.
             A escala de interpretação é baseada em respostas de 0 a 3 para cada pergunta.
