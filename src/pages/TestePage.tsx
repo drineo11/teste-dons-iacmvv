@@ -28,13 +28,6 @@ export function TestePage() {
     setRespostas({ ...respostas, [perguntaId]: valor });
   };
 
-  const preencherTesteRapido = () => {
-    const novasRespostas: Record<number, number> = {};
-    PERGUNTAS.forEach(p => {
-      novasRespostas[p.id] = Math.floor(Math.random() * 4);
-    });
-    setRespostas(novasRespostas);
-  };
 
   const validarFormulario = () => {
     if (!dados.nome) { alert('Informe seu nome.'); return false; }
@@ -156,9 +149,6 @@ export function TestePage() {
         ))}
 
         <div className="botoes">
-          <button type="button" className="btn btn-secondary" onClick={preencherTesteRapido}>
-            Preencher Teste Rápido
-          </button>
           <button
             type="button"
             className="btn btn-primary"
