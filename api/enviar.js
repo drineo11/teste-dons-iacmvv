@@ -109,6 +109,15 @@ function gerarHtmlParticipante(nome, resultados) {
           </td>
         </tr>
 
+        <!-- LINK SOBRE DONS -->
+        <tr>
+          <td style="padding:24px 32px 8px;text-align:center;">
+            <p style="margin:0;font-size:0.95rem;color:#6B1A1A;font-weight:600;line-height:1.7;background:#FBEAEA;border:1px solid #F5CFCF;border-radius:10px;padding:16px 20px;">
+              <a href="https://sobre-os-dons-iacmvv.vercel.app/" style="color:#C94A4A;font-weight:700;text-decoration:underline;">Clique aqui</a> e saiba um pouco mais sobre os dons do Espírito Santo
+            </p>
+          </td>
+        </tr>
+
         <!-- FOOTER -->
         <tr>
           <td style="background:#FBEAEA;padding:20px 32px;text-align:center;border-top:1px solid #F5CFCF;">
