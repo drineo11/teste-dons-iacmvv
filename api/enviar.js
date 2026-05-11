@@ -1,5 +1,45 @@
 import nodemailer from 'nodemailer';
 
+// ── Airtable ──────────────────────────────────────────────────────────────────
+async function registrarNoAirtable(nome, email, telefone) {
+  const token   = process.env.AIRTABLE_TOKEN;
+  const baseId  = process.env.AIRTABLE_BASE_ID;
+  const tableId = process.env.AIRTABLE_TABLE_ID;
+
+  if (!token || !baseId || !tableId) {
+    console.warn('Airtable: variáveis de ambiente não configuradas. Registro ignorado.');
+    return;
+  }
+
+  // Data/Hora no fuso de Brasília em formato legível
+  const dataHora = new Date().toLocaleString('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    day: '2-digit', month: '2-digit', year: 'numeric',
+    hour: '2-digit', minute: '2-digit', second: '2-digit',
+  });
+
+  const res = await fetch(`https://api.airtable.com/v0/${baseId}/${tableId}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      fields: {
+        Nome:      nome,
+        Email:     email,
+        Telefone:  telefone,
+        'Data/Hora': dataHora,
+      },
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Airtable: ${err}`);
+  }
+}
+
 const EMAIL_USER = process.env.EMAIL_USER;
 const EMAIL_PASS = process.env.EMAIL_PASS;
 const PASTOR_EMAIL = process.env.PASTOR_EMAIL;
@@ -296,5 +336,13 @@ export default async function handler(req, res) {
   } catch (erro) {
     console.error('Erro ao enviar email:', erro);
     res.status(500).json({ erro: 'Falha ao enviar email' });
+  }
+
+  // Registro no Airtable — não bloqueia a resposta ao usuário
+  try {
+    await registrarNoAirtable(nome.trim(), email.trim(), telefone.trim());
+    console.log(`✅ Airtable: registro salvo para ${nome.trim()}`);
+  } catch (erro) {
+    console.error('⚠️ Airtable: falha ao registrar (não afeta o usuário):', erro.message);
   }
 }
