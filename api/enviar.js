@@ -329,20 +329,22 @@ export default async function handler(req, res) {
     html: gerarHtmlPastor(nome.trim(), email, telefone.trim(), resultados),
   };
 
+  // Envia os e-mails
   try {
     await transporter.sendMail(mailOptionsParticipante);
     await transporter.sendMail(mailOptionsPastor);
-    res.status(200).json({ sucesso: true });
   } catch (erro) {
     console.error('Erro ao enviar email:', erro);
-    res.status(500).json({ erro: 'Falha ao enviar email' });
+    return res.status(500).json({ erro: 'Falha ao enviar email' });
   }
 
-  // Registro no Airtable — não bloqueia a resposta ao usuário
+  // Registro no Airtable — ANTES de enviar a resposta (Vercel encerra a função após res.json)
   try {
     await registrarNoAirtable(nome.trim(), email.trim(), telefone.trim());
     console.log(`✅ Airtable: registro salvo para ${nome.trim()}`);
   } catch (erro) {
     console.error('⚠️ Airtable: falha ao registrar (não afeta o usuário):', erro.message);
   }
+
+  res.status(200).json({ sucesso: true });
 }
